@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Nuvola Diary — a journal that never leaves your device</title>
+<meta name="description" content="A minimalist journal with real-time mood insights and an optional on-device AI coach. No account, no server, nothing ever uploaded." />
+<link rel="icon" href="icon.svg" type="image/svg+xml" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: { extend: {
+    colors: { paper:'var(--paper)', ink:'var(--ink)', mist:'var(--mist)', sky:'var(--sky)', dusk:'var(--dusk)', card:'var(--card)' },
+    fontFamily: { serif:['Georgia','Cambria','serif'] }
+  } }
+};
+</script>
+<style>
+  :root { --paper:#F7F6F2; --ink:#23262B; --mist:#8A93A6; --sky:#5B7DB1; --dusk:#E4E8F0; --card:#FFFFFF; }
+  html.dark { --paper:#1B1D22; --ink:#EDEDEF; --mist:#8D93A3; --sky:#7FA0D6; --dusk:#2D3038; --card:#24262C; }
+  body { background:var(--paper); color:var(--ink); font-family: system-ui, sans-serif; }
+  @media (prefers-reduced-motion: reduce) { * { animation:none !important; transition:none !important; } }
+  button:focus-visible, a:focus-visible { outline:2px solid var(--sky); outline-offset:2px; }
+  .cloud { position:absolute; border-radius:999px; filter:blur(0px); opacity:.5; }
+  html.dark .cloud { opacity:.12; }
+
+  /* ---- Demo mock (used only if assets/demo.gif is missing) ---- */
+  .demo-frame { aspect-ratio: 9/17; background:var(--card); }
+  .demo-caret { animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity:0; } }
+  .demo-line { overflow:hidden; white-space:nowrap; width:0; animation: type 2.4s steps(30,end) infinite; }
+  @keyframes type { 0%,4% { width:0 } 45%,60% { width:100% } 95%,100% { width:0 } }
+  .demo-bar { transform-origin:bottom; animation: grow 3.6s ease-in-out infinite; }
+  @keyframes grow { 0%,10% { transform:scaleY(.15) } 55%,75% { transform:scaleY(1) } 100% { transform:scaleY(1) } }
+</style>
+</head>
+<body class="min-h-screen">
+
+<header class="max-w-5xl mx-auto px-6 md:px-10 pt-6 flex items-center justify-between">
+  <div class="flex items-center gap-2 font-serif text-xl">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--sky)" stroke-width="2" stroke-linecap="round"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.5 12 3.5 3.5 0 0 0 6 19z"/></svg>
+    Nuvola
+  </div>
+  <a href="app.html" class="text-sm rounded-full border border-dusk px-4 py-2 hover:bg-dusk/60">Open the app</a>
+</header>
+
+<!-- HERO -->
+<section class="max-w-5xl mx-auto px-6 md:px-10 pt-10 md:pt-16 pb-16 relative overflow-hidden">
+  <div class="cloud w-40 h-40 bg-sky -top-10 -left-10"></div>
+  <div class="cloud w-56 h-56 bg-sky top-24 -right-16"></div>
+  <div class="grid md:grid-cols-2 gap-12 items-center relative">
+    <div>
+      <h1 class="font-serif text-4xl md:text-5xl leading-tight">A diary that keeps your words on your device. Only your device.</h1>
+      <p class="mt-5 text-lg text-mist leading-8 max-w-md">Write, track your mood, and — if you want — get a short reflection from an AI coach that runs entirely offline. No account, no server, nothing to leak.</p>
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <a href="app.html" class="rounded-full bg-sky text-white text-base font-medium px-7 py-3.5 hover:opacity-90">Start writing</a>
+        <a href="#prove-it" class="text-sm text-mist hover:text-ink underline underline-offset-4">See how to check that yourself</a>
+      </div>
+    </div>
+
+    <!-- Demo -->
+    <div class="mx-auto w-full max-w-[260px]">
+      <div class="demo-frame rounded-[2rem] border border-dusk shadow-sm p-4 flex flex-col gap-4" role="img" aria-label="Animated preview of writing an entry and a mood chart forming">
+        <img src="assets/demo.gif" alt="" class="hidden rounded-xl" onerror="this.remove(); document.getElementById('demo-mock').classList.remove('hidden');" />
+        <div id="demo-mock" class="flex flex-col gap-5 flex-1">
+          <div>
+            <div class="text-[11px] text-mist mb-1">Today</div>
+            <div class="demo-line font-serif text-sm border-r border-ink/40 pr-0.5">Felt lighter after the walk today.</div>
+          </div>
+          <div class="flex items-end gap-2 h-16 mt-auto">
+            <div class="demo-bar w-4 rounded-t bg-dusk h-full" style="animation-delay:0s"></div>
+            <div class="demo-bar w-4 rounded-t bg-dusk h-full" style="animation-delay:.15s"></div>
+            <div class="demo-bar w-4 rounded-t bg-sky h-full" style="animation-delay:.3s"></div>
+            <div class="demo-bar w-4 rounded-t bg-dusk h-full" style="animation-delay:.45s"></div>
+            <div class="demo-bar w-4 rounded-t bg-sky h-full" style="animation-delay:.6s"></div>
+          </div>
+          <div class="text-[11px] text-mist">Mood, scored on-device as you write.</div>
+        </div>
+      </div>
+      <p class="text-xs text-mist text-center mt-3">Mock preview — drop a real screen recording at <code class="text-[11px]">assets/demo.gif</code> to replace it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="max-w-5xl mx-auto px-6 md:px-10 py-14 border-t border-dusk">
+  <div class="grid md:grid-cols-3 gap-10">
+    <div>
+      <h2 class="font-serif text-xl mb-2">Nothing leaves this screen</h2>
+      <p class="text-mist leading-7">Your entries are stored in your browser's own database, not on a server. There's nothing for anyone else to read, sell, or lose.</p>
+    </div>
+    <div>
+      <h2 class="font-serif text-xl mb-2">Watch your mood take shape</h2>
+      <p class="text-mist leading-7">A quick five-face check-in or a written entry both feed a running chart, scored on your device the moment you save.</p>
+    </div>
+    <div>
+      <h2 class="font-serif text-xl mb-2">A coach, not a database</h2>
+      <p class="text-mist leading-7">Turn on a small AI model, once, and get a short, kind reflection on what you wrote — generated locally, never sent anywhere.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROVE IT YOURSELF -->
+<section id="prove-it" class="max-w-5xl mx-auto px-6 md:px-10 py-14 border-t border-dusk">
+  <h2 class="font-serif text-3xl mb-2">Don't take our word for it</h2>
+  <p class="text-mist max-w-2xl leading-7 mb-10">Nuvola makes a strong claim — that your writing never leaves your device. Here are two ways to check that in about a minute, no technical background required.</p>
+
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="rounded-2xl bg-card border border-dusk p-6">
+      <h3 class="font-medium mb-3">Watch the Network tab</h3>
+      <ol class="text-sm text-mist leading-7 list-decimal list-inside space-y-1">
+        <li>Open the app and press F12 (or right-click → Inspect).</li>
+        <li>Click the "Network" tab in the panel that opens.</li>
+        <li>Write a diary entry, save it, and ask the coach for feedback.</li>
+        <li>Look through the requests: you'll see the app's own files and, only if you turned the coach on, requests fetching model files — never one carrying your words.</li>
+      </ol>
+    </div>
+    <div class="rounded-2xl bg-card border border-dusk p-6">
+      <h3 class="font-medium mb-3">Turn on airplane mode</h3>
+      <ol class="text-sm text-mist leading-7 list-decimal list-inside space-y-1">
+        <li>Load the app once (and download the coach, if you want it) while connected.</li>
+        <li>Switch your phone or laptop to airplane mode.</li>
+        <li>Keep writing, checking in, and asking the coach for feedback.</li>
+        <li>Everything keeps working — there's nowhere for a request to go.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="max-w-5xl mx-auto px-6 md:px-10 py-14 border-t border-dusk">
+  <h2 class="font-serif text-3xl mb-8">Questions</h2>
+  <div class="divide-y divide-dusk max-w-3xl">
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">Is my writing really private?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">Yes. Entries are stored in your browser's local database. There's no login, no cloud sync, and no server that ever sees your text — see "Prove it yourself" above.</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">What AI model powers the coach?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">A small open model (Qwen2.5), running in your browser via WebGPU. You can pick a 0.5B version (~450 MB, faster, works on most phones) or a 1.5B version (~1.3 GB, more thoughtful replies, wants a newer device).</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">Does it work without internet?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">Yes, once loaded. Writing and mood check-ins work with zero downloads. The coach needs a one-time download; after that it works fully offline.</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">Will it work on an older phone?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">The journal and mood check-ins work everywhere. The AI coach needs a browser with WebGPU (recent Chrome, Edge, or Safari). If your device doesn't support it, the coach quietly stays off — nothing else is affected.</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">I opened this inside Instagram or Facebook — why is the coach missing?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">Those apps' built-in browsers block the technology the coach needs. Tap the ⋯ menu and choose "Open in Chrome" or "Open in Safari" to unlock it. Journaling still works fine either way.</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">What does it cost?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">Nothing. There's no account and no subscription — it's a page that runs entirely in your browser.</p>
+    </details>
+    <details class="py-4 group">
+      <summary class="cursor-pointer font-medium list-none flex justify-between items-center">Can I get my entries out if I switch devices?<span class="text-mist group-open:rotate-45 transition-transform">+</span></summary>
+      <p class="text-mist leading-7 mt-2">Yes — export a backup file from the "You" tab and import it on another device. Because nothing syncs automatically, this is the one manual step privacy asks of you.</p>
+    </details>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="max-w-5xl mx-auto px-6 md:px-10 py-20 border-t border-dusk text-center">
+  <h2 class="font-serif text-3xl md:text-4xl mb-6">Write the first line. It's already yours.</h2>
+  <a href="app.html" class="inline-block rounded-full bg-sky text-white text-lg font-medium px-9 py-4 hover:opacity-90">Start writing</a>
+</section>
+
+<footer class="max-w-5xl mx-auto px-6 md:px-10 py-8 text-xs text-mist">
+  Nuvola Diary — nothing you write is ever sent anywhere.
+</footer>
+
+<script>
+  const mode = localStorage.getItem('nuvola.theme') || 'system';
+  const dark = mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.classList.toggle('dark', dark);
+</script>
+</body>
+</html>
