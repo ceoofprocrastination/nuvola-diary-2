@@ -236,6 +236,7 @@ tailwind.config = {
 <script id="worker-src" type="text/plain">
 import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 import { CreateMLCEngine } from 'https://esm.run/@mlc-ai/web-llm@0.2.79';
+import { Analytics } from "@vercel/analytics/next"
 
 env.allowLocalModels = false;
 env.useBrowserCache = true;
